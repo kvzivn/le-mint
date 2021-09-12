@@ -1,18 +1,23 @@
 import { useState } from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
+import ParticleEffectButton from "react-particle-effect-button"
 import coverVideo from "./media/cover.mp4"
 import CloseIcon from "./CloseIcon"
+import Checkmark from "./Checkmark"
 import Info from "./Info"
+import "./spinner2.css"
+
+import "animate.css"
 
 const Modal = styled.div`
   position: absolute;
   width: 650px;
-  height: ${({ minting }) => (minting ? "620px" : "560px")};
+  height: ${({ success }) => (success ? "720px" : "560px")};
   margin: 0 auto;
   border: 2px solid #eaeaea;
   box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
   background-color: white;
-  transition: height 1s ease-out;
+  transition: height 1.5s ease-in-out;
   transition-delay: 0.5s;
 `
 
@@ -24,63 +29,153 @@ const Container = styled.div`
   padding: 56px 84px;
 `
 
-const Video = styled.video`
-  position: absolute;
-  top: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 292px;
-  margin: 0 auto;
-  opacity: ${({ minting }) => (minting ? 1 : 0)};
-  transition: opacity 1s ease-in-out;
-  transition-delay: 2s;
+const Heading = styled.h2`
+  margin-top: 15px;
+  margin-bottom: 35px;
+  font-family: Georgia;
+  font-weight: 700;
+  font-size: 38px;
+  letter-spacing: 0.02em;
+  text-align: center;
 `
 
-const Button = styled.button`
+const Text = styled.p`
+  margin-top: 35px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+`
+
+const VideoContainer = styled.div`
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  opacity: ${({ success }) => (success ? 1 : 0)};
+  transition: opacity 1s ease-in-out;
+  transition-delay: 2.25s;
+  pointer-events: none;
+`
+
+const Video = styled.video`
+  width: 280px;
+  animation: ${({ success }) => (success ? "fadeInRight" : undefined)};
+  animation-duration: 1.25s;
+  animation-delay: 2.5s;
+  opacity: ${({ success }) => (success ? 1 : 0)};
+  transition: opacity 1s ease-in-out;
+  transition-delay: 2.5s;
+  z-index: 2;
+`
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  top: 37%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: ${({ loading }) => (loading ? 1 : 0)};
+  transition: opacity 0.25s ease-in-out;
+  transition-delay: 0.5s;
+`
+
+const ButtonContainer = styled.div`
   position: absolute;
   bottom: 56px;
   transform: translateX(-50%);
   left: 50%;
-  width: 478px;
-  height: 52px;
-  background: ${({ minting }) =>
-    minting ? "#ccc" : "linear-gradient(180deg, #ef2548 0%, #c91534 100%)"};
-  border: 1px solid #a1a1a1;
-  box-sizing: border-box;
-  border-radius: 6px;
-  color: white;
-  text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
+`
+
+const Button = styled.button`
+  cursor: ${({ loading }) => (loading ? "not-allowed" : "pointer")};
 `
 
 const Modal1 = ({ setShowModal }) => {
-  const [minting, setMinting] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [buttonSuccess, setButtonSuccess] = useState(false)
+  const [buttonTextSuccess, setButtonTextSuccess] = useState(false)
+
+  const init = () => {
+    setLoading(true)
+
+    setTimeout(() => {
+      setLoading(false)
+      setSuccess(true)
+      setButtonSuccess(true)
+    }, 4000)
+
+    setTimeout(() => {
+      setButtonSuccess(false)
+      setButtonTextSuccess(true)
+    }, 7000)
+  }
 
   return (
-    <Modal minting={minting}>
+    <Modal success={success}>
       <Container>
         <CloseIcon onClick={() => setShowModal(false)} />
 
-        <Video
-          minting={minting}
-          muted
-          preload="auto"
-          loop="1"
-          playsInline="1"
-          autoPlay="1"
-          poster="https://images.ctfassets.net/znxnw90vc5ew/1sg43cMTB5Vg17M63kxhT0/5e4005963c5d66d0171d3d2ecedea96e/cover34_poster.jpg?fm=jpg&fl=progressive&w=500"
-          src={coverVideo}
-        />
+        <VideoContainer success={success}>
+          <Heading>Congratulations!</Heading>
+          <Video
+            success={success}
+            muted
+            preload="auto"
+            loop="1"
+            playsInline="1"
+            autoPlay="1"
+            src={coverVideo}
+          />
 
-        <Info minting={minting} number={3} />
+          <Text>You just minted issue #34</Text>
+        </VideoContainer>
+
+        <Info success={success} loading={loading} number={3} />
       </Container>
 
-      <Button minting={minting} onClick={() => setMinting(true)}>
-        {minting ? "Minting" : "Mint"}
-      </Button>
+      <SpinnerContainer loading={loading}>
+        <div class="sk-chase">
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+        </div>
+      </SpinnerContainer>
+
+      <ButtonContainer loading={loading}>
+        <ParticleEffectButton color="#c91534" hidden={buttonSuccess}>
+          <Button
+            loading={loading}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "478px",
+              height: "52px",
+              background: "linear-gradient(180deg, #ef2548 0%, #c91534 100%)",
+              border: "1px solid",
+              borderColor: "#F2F2F2",
+              borderRadius: "6px",
+              color: "white",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              letterSpacing: "0.1em",
+            }}
+            onClick={() => (buttonTextSuccess ? setShowModal(false) : init())}
+          >
+            {loading || success
+              ? buttonTextSuccess
+                ? "View transaction"
+                : "Minting..."
+              : "Mint"}
+          </Button>
+        </ParticleEffectButton>
+      </ButtonContainer>
     </Modal>
   )
 }

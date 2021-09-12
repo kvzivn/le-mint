@@ -178,14 +178,13 @@ const SparkleWrapper = styled.span`
 const SparkleSvg = styled.svg`
   display: block;
   @media (prefers-reduced-motion: no-preference) {
-    animation: ${spin} 4000ms linear;
+    animation: ${spin} 1000ms linear;
   }
 `
 
 const ChildWrapper = styled.strong`
   position: relative;
   z-index: 1;
-  font-weight: bold;
 `
 
 export default Sparkles
