@@ -40,7 +40,7 @@ const Heading = styled.h2`
 const Text = styled.p`
   margin-top: 35px;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.02em;
   text-align: center;
 `

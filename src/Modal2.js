@@ -1,15 +1,16 @@
-import { useState, useRef } from "react"
+import { useState } from "react"
 import styled, { keyframes } from "styled-components"
+import ParticleEffectButton from "react-particle-effect-button"
 import coverVideo from "./media/cover.mp4"
 import CloseIcon from "./CloseIcon"
-import Sparkles from "./Sparkles"
+import Checkmark from "./Checkmark"
 import Info from "./Info"
-import "./spinner3.css"
+import "./spinner2.css"
 
 const Modal = styled.div`
   position: absolute;
   width: 650px;
-  height: ${({ loading }) => (loading ? "720px" : "560px")};
+  height: ${({ success }) => (success ? "720px" : "560px")};
   margin: 0 auto;
   border: 2px solid #eaeaea;
   box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
@@ -37,14 +38,11 @@ const Heading = styled.h2`
 `
 
 const Text = styled.p`
-  position: absolute;
-  bottom: -48px;
   margin-top: 35px;
   font-size: 22px;
+  font-weight: 600;
   letter-spacing: 0.02em;
-  font-weight: 700;
   text-align: center;
-  color: black;
 `
 
 const VideoContainer = styled.div`
@@ -54,138 +52,127 @@ const VideoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100%;
-  opacity: ${({ loading }) => (loading ? 1 : 0)};
+  opacity: ${({ success }) => (success ? 1 : 0)};
   transition: opacity 1s ease-in-out;
   transition-delay: 2.25s;
+  pointer-events: none;
 `
 
 const Video = styled.video`
-  position: absolute;
-  top: ${({ complete }) => (complete ? "40px" : "90px")};
-  width: ${({ complete }) => (complete ? "320px" : "280px")};
-  filter: ${({ success }) => (success ? "grayscale(0)" : "grayscale(1)")};
-  transition: all 1s ease-in-out;
-`
-
-const BoxShadow = styled.div`
-  position: absolute;
-  top: ${({ complete }) => (complete ? "40px" : "90px")};
-  width: ${({ complete }) => (complete ? "320px" : "280px")};
-  height: ${({ complete }) => (complete ? "414px" : "362px")};
-  box-shadow: ${({ success }) =>
-    success
-      ? "0 0 0 0px inset, 0 0 5px grey, 0 0 10px grey inset"
-      : "0 0 0 150px inset, 0 0 5px grey"};
-  color: rgb(255 255 255 / 0.75);
-  transition: all 1s ease-in-out;
+  width: 280px;
+  transform: ${({ success }) =>
+    success ? "translateX(0px)" : "translateX(200px)"};
+  opacity: ${({ success }) => (success ? 1 : 0)};
+  transition: all 0.75s ease-in-out;
+  transition-delay: 2.5s;
+  z-index: 2;
 `
 
 const SpinnerContainer = styled.div`
   position: absolute;
-  top: 48%;
+  top: 37%;
   left: 50%;
   transform: translateX(-50%);
+  opacity: ${({ loading }) => (loading ? 1 : 0)};
+  transition: opacity 0.25s ease-in-out;
+  transition-delay: 0.5s;
 `
 
-const Button = styled.button`
+const ButtonContainer = styled.div`
   position: absolute;
   bottom: 56px;
   transform: translateX(-50%);
   left: 50%;
-  width: 478px;
-  height: 52px;
-  background: ${({ loading }) =>
-    loading ? "#F2F2F2" : "linear-gradient(180deg, #ef2548 0%, #c91534 100%)"};
-  border: 1px solid;
-  border-color: ${({ loading }) => (loading ? "#fafafa" : "#F2F2F2")};
-  box-sizing: border-box;
-  border-radius: 6px;
-  color: ${({ loading }) => (loading ? "#141414" : "white")};
-  text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-  cursor: ${({ loading }) => (loading ? "select" : "pointer")};
-  transition: all 0.15s ease-in-out;
+`
+
+const Button = styled.button`
+  cursor: ${({ loading }) => (loading ? "not-allowed" : "pointer")};
 `
 
 const Modal1 = ({ setShowModal }) => {
-  const videoRef = useRef()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [complete, setComplete] = useState(false)
+  const [buttonSuccess, setButtonSuccess] = useState(false)
+  const [buttonTextSuccess, setButtonTextSuccess] = useState(false)
 
   const init = () => {
     setLoading(true)
 
     setTimeout(() => {
-      videoRef.current.play()
+      setLoading(false)
       setSuccess(true)
-    }, 7000)
+      setButtonSuccess(true)
+    }, 4000)
 
     setTimeout(() => {
-      setComplete(true)
-    }, 8000)
+      setButtonSuccess(false)
+      setButtonTextSuccess(true)
+    }, 7000)
   }
 
   return (
-    <Modal loading={loading}>
+    <Modal success={success}>
       <Container>
         <CloseIcon onClick={() => setShowModal(false)} />
 
-        <VideoContainer loading={loading}>
-          {!success && <Heading>Minting...</Heading>}
+        <VideoContainer success={success}>
+          <Heading>Congratulations!</Heading>
           <Video
             success={success}
-            complete={complete}
             muted
             preload="auto"
             loop="1"
             playsInline="1"
+            autoPlay="1"
             src={coverVideo}
-            ref={videoRef}
           />
 
-          {!success && (
-            <SpinnerContainer>
-              <div class="lds-spinner">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            </SpinnerContainer>
-          )}
-
-          <BoxShadow success={success} complete={complete} />
-
-          <Text>
-            {complete ? (
-              <Sparkles>Gazette #34 is yours. Congratulations!</Sparkles>
-            ) : (
-              "Redlion Gazette #34"
-            )}
-          </Text>
+          <Text>You just minted issue #34</Text>
         </VideoContainer>
 
         <Info success={success} loading={loading} number={2} />
       </Container>
 
-      {complete ? (
-        <Button onClick={() => setShowModal(false)}>View transaction</Button>
-      ) : (
-        <Button loading={loading || success} onClick={() => init()}>
-          {loading || success ? "Transaction pending" : "Mint"}
-        </Button>
-      )}
+      <SpinnerContainer loading={loading}>
+        <div class="sk-chase">
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+        </div>
+      </SpinnerContainer>
+
+      <ButtonContainer loading={loading}>
+        <ParticleEffectButton color="#c91534" hidden={buttonSuccess}>
+          <Button
+            loading={loading}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "478px",
+              height: "52px",
+              background: "linear-gradient(180deg, #ef2548 0%, #c91534 100%)",
+              border: "1px solid",
+              borderColor: "#F2F2F2",
+              borderRadius: "6px",
+              color: "white",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              letterSpacing: "0.1em",
+            }}
+            onClick={() => (buttonTextSuccess ? setShowModal(false) : init())}
+          >
+            {loading || success
+              ? buttonTextSuccess
+                ? "View transaction"
+                : "Minting..."
+              : "Mint"}
+          </Button>
+        </ParticleEffectButton>
+      </ButtonContainer>
     </Modal>
   )
 }
