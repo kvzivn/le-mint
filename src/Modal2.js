@@ -1,6 +1,8 @@
 import { useState } from "react"
 import styled, { keyframes } from "styled-components"
 import ParticleEffectButton from "react-particle-effect-button"
+import Confetti from "react-confetti"
+import useWindowSize from "./useWindowSize"
 import coverVideo from "./media/cover.mp4"
 import CloseIcon from "./CloseIcon"
 import Checkmark from "./Checkmark"
@@ -17,6 +19,7 @@ const Modal = styled.div`
   background-color: white;
   transition: height 1.5s ease-in-out;
   transition-delay: 0.5s;
+  overflow: hidden;
 `
 
 const Container = styled.div`
@@ -90,6 +93,7 @@ const Button = styled.button`
 `
 
 const Modal1 = ({ setShowModal }) => {
+  const { width, height } = useWindowSize()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [buttonSuccess, setButtonSuccess] = useState(false)
@@ -173,6 +177,8 @@ const Modal1 = ({ setShowModal }) => {
           </Button>
         </ParticleEffectButton>
       </ButtonContainer>
+
+      {buttonTextSuccess && <Confetti width={width} height={height} />}
     </Modal>
   )
 }

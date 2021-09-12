@@ -1,5 +1,8 @@
 import { useState, useRef } from "react"
 import styled, { keyframes } from "styled-components"
+import ParticleEffectButton from "react-particle-effect-button"
+import Confetti from "react-confetti"
+import useWindowSize from "./useWindowSize"
 import coverVideo from "./media/cover.mp4"
 import CloseIcon from "./CloseIcon"
 import Sparkles from "./Sparkles"
@@ -16,6 +19,7 @@ const Modal = styled.div`
   background-color: white;
   transition: height 1.5s ease-in-out;
   transition-delay: 0.5s;
+  overflow: hidden;
 `
 
 const Container = styled.div`
@@ -110,6 +114,7 @@ const Button = styled.button`
 `
 
 const Modal1 = ({ setShowModal }) => {
+  const { width, height } = useWindowSize()
   const videoRef = useRef()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -119,11 +124,11 @@ const Modal1 = ({ setShowModal }) => {
     setLoading(true)
 
     setTimeout(() => {
-      videoRef.current.play()
       setSuccess(true)
     }, 7500)
 
     setTimeout(() => {
+      videoRef.current.play()
       setComplete(true)
     }, 8250)
   }
@@ -168,11 +173,9 @@ const Modal1 = ({ setShowModal }) => {
           <BoxShadow success={success} complete={complete} />
 
           <Text>
-            {complete ? (
-              <Sparkles>Gazette #34 is yours. Congratulations!</Sparkles>
-            ) : (
-              "Redlion Gazette #34"
-            )}
+            {complete
+              ? "Gazette #34 is yours. Congratulations!"
+              : "Redlion Gazette #34"}
           </Text>
         </VideoContainer>
 
@@ -186,6 +189,8 @@ const Modal1 = ({ setShowModal }) => {
           {loading || success ? "Transaction pending" : "Mint"}
         </Button>
       )}
+
+      {success && <Confetti width={width} height={height} />}
     </Modal>
   )
 }
