@@ -98,8 +98,8 @@ const print = keyframes`
   75% { transform: translateY(-75%); }
   80% { transform: translateY(-75%); }
   85% { transform: translateY(-75%); }
-  90% { transform: translateY(-90%); }
-  95% { transform: translateY(-95%); }
+  90% { transform: translateY(-75%); }
+  95% { transform: translateY(-75%); }
   100% { transform: translateY(-100%); }
 `
 
@@ -108,8 +108,8 @@ const Video = styled.video`
   top: 456px;
   width: ${({ success }) => (success ? "340px" : "280px")};
   z-index: 2;
-  animation: ${print} 6s forwards ease-in;
-  animation-delay: 3s;
+  animation: ${print} 5s forwards ease-in;
+  animation-delay: 4s;
   transition: width 0.35s ease-in-out;
 `
 
@@ -150,7 +150,7 @@ const Divider = styled.div`
   height: ${({ loading }) => (loading ? "3px" : "1px")};
   opacity: ${({ success }) => (success ? 0 : 1)};
   background-color: #e5e5e5;
-  transition: all 1.5s ease-in-out;
+  transition: all 1s ease-in-out;
   transition-delay: 0.5s;
   z-index: 4;
 `
