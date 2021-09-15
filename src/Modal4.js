@@ -88,10 +88,10 @@ const VideoContainer = styled.div`
 
 const print = keyframes`
   0% { transform: translateY(0); }
-  5% { transform: translateY(-16%); }
-  8% { transform: translateY(-16%); }
-  15% { transform: translateY(-16%); }
-  20% { transform: translateY(-25%); }
+  5% { transform: translateY(0); }
+  10% { transform: translateY(0); }
+  15% { transform: translateY(-15%); }
+  20% { transform: translateY(-15%); }
   25% { transform: translateY(-30%); }
   45% { transform: translateY(-30%); }
   50% { transform: translateY(-50%); }
