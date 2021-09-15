@@ -3,6 +3,7 @@ import styled from "styled-components"
 import Modal1 from "./Modal1"
 import Modal2 from "./Modal2"
 import Modal3 from "./Modal3"
+import Modal4 from "./Modal4"
 import "./App.css"
 
 const Buttons = styled.div`
@@ -35,6 +36,7 @@ const App = () => {
     1: <Modal1 setShowModal={setShowModal} />,
     2: <Modal2 setShowModal={setShowModal} />,
     3: <Modal3 setShowModal={setShowModal} />,
+    4: <Modal4 setShowModal={setShowModal} />,
   }
 
   return (
@@ -45,6 +47,7 @@ const App = () => {
         <Button onClick={() => setShowModal(1)}>1</Button>
         <Button onClick={() => setShowModal(2)}>2</Button>
         <Button onClick={() => setShowModal(3)}>3</Button>
+        <Button onClick={() => setShowModal(4)}>4</Button>
       </Buttons>
     </div>
   )
