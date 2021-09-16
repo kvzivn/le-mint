@@ -51,7 +51,6 @@ const pulse = keyframes`
 const Text = styled.p`
   position: absolute;
   bottom: 119px;
-  /* bottom: ${({ success }) => (success ? "106px;" : "119px;")}; */
   left: 50%;
   transform: translateX(-50%);
   margin-top: 35px;
@@ -190,7 +189,7 @@ const Modal1 = ({ setShowModal }) => {
     setTimeout(() => {
       setButtonSuccess(false)
       setComplete(true)
-    }, 11000)
+    }, 11500)
   }
 
   return (
@@ -242,17 +241,6 @@ const Modal1 = ({ setShowModal }) => {
       <Text ref={textRef} success={success} loading={loading}>
         {complete ? "Congratulations!" : "Redlion Gazette #34"}
       </Text>
-      {/*
-      <Text ref={textRef} success={success} loading={loading}>
-        {complete ? (
-          <div>
-            Congratulations!
-            <Desc>You just minted #34</Desc>
-          </div>
-        ) : (
-          "Redlion Gazette #34"
-        )}
-      </Text> */}
 
       <ButtonContainer loading={loading}>
         <ParticleEffectButton color="#c91534" hidden={buttonSuccess}>
